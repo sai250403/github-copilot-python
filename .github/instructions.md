@@ -38,3 +38,15 @@ This project is a Flask-based Sudoku web application with an HTML, CSS, and Java
 - Prefer readability over clever implementations.
 - Add comments only where they improve understanding.
 - Suggest refactoring when duplicate code exists.
+
+Sudoku/
+│
+├── .github/
+│   ├── instructions.md
+│   └── copilot-instructions.md   (optional)
+│
+├── starter/
+│   ├── app.py
+│   ├── static/
+│   ├── templates/
+│   └── tests/
