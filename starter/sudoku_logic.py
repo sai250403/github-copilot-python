@@ -4,7 +4,7 @@ import random
 SIZE = 9
 EMPTY = 0
 
-def deep_copy(board):
+def copy_board(board):
     return copy.deepcopy(board)
 
 def create_empty_board():
@@ -24,7 +24,7 @@ def is_safe(board, row, col, num):
                 return False
     return True
 
-def fill_board(board):
+def solve_board(board):
     for row in range(SIZE):
         for col in range(SIZE):
             if board[row][col] == EMPTY:
@@ -33,7 +33,7 @@ def fill_board(board):
                 for candidate in possible:
                     if is_safe(board, row, col, candidate):
                         board[row][col] = candidate
-                        if fill_board(board):
+                        if solve_board(board):
                             return True
                         board[row][col] = EMPTY
                 return False
@@ -50,8 +50,8 @@ def remove_cells(board, clues):
 
 def generate_puzzle(clues=35):
     board = create_empty_board()
-    fill_board(board)
-    solution = deep_copy(board)
+    solve_board(board)
+    solution = copy_board(board)
     remove_cells(board, clues)
-    puzzle = deep_copy(board)
+    puzzle = copy_board(board)
     return puzzle, solution
