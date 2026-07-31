@@ -89,11 +89,11 @@ button:hover {
 }
 
 .incorrect {
-    background: #ffcccc;
+    background: #ffb3b3 !important;
 }
 
 .correct {
-    background: #d7ffd7;
+    background: #c8f7c5 !important;
 }
 
 .sudoku-cell:nth-child(3),
@@ -172,4 +172,19 @@ button:hover {
         width: 100%;
     }
 
+}
+.block-light {
+    background-color: #f8f9fa;
+}
+
+.block-dark {
+    background-color: #e3f2fd;
+}
+
+.dark-mode .block-light {
+    background-color: #3b3b3b;
+}
+
+.dark-mode .block-dark {
+    background-color: #505050;
 }

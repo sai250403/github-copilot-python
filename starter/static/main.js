@@ -12,6 +12,7 @@ let solution = [];
 
 let seconds = 0;
 let timerInterval = null;
+let hintsUsed = 0;
 
 function startTimer() {
     clearInterval(timerInterval);
@@ -52,6 +53,7 @@ async function newGame() {
     messageElement.textContent = "";
 
     startTimer();
+    hintsUsed = 0;
 }
 
 function renderBoard() {
@@ -68,6 +70,13 @@ function renderBoard() {
             const input = document.createElement("input");
 
             input.className = "sudoku-cell";
+            const block = Math.floor(r / 3) + Math.floor(c / 3);
+
+            if (block % 2 === 0) {
+              input.classList.add("block-light");
+            } else {
+              input.classList.add("block-dark");
+            }
 
             input.maxLength = 1;
 
@@ -180,11 +189,26 @@ async function checkSolution() {
 
     } else {
 
-        messageElement.style.color = "red";
+    document.querySelectorAll(".sudoku-cell").forEach(cell => {
+    cell.classList.remove("incorrect");
+    cell.classList.remove("correct");
+  });
 
-        messageElement.textContent = "Incorrect solution.";
+    result.incorrect.forEach(([r, c]) => {
 
-    }
+        const cell = document.querySelector(
+            `.sudoku-cell[data-row="${r}"][data-col="${c}"]`
+        );
+
+        if (cell && !cell.disabled) {
+            cell.classList.add("incorrect");
+        }
+
+    });
+
+    messageElement.style.color = "red";
+    messageElement.textContent = "Incorrect solution.";
+  }
 
 }
 
@@ -209,6 +233,7 @@ async function giveHint() {
     cell.classList.remove("incorrect");
 
     cell.classList.add("prefilled");
+    hintsUsed++;
 
     checkCompletion();
 
@@ -266,12 +291,13 @@ function saveScore() {
 
     scores.push({
 
-        name,
-        time,
-        difficulty,
-        seconds
+    name,
+    time,
+    difficulty,
+    hints: hintsUsed,
+    seconds
 
-    });
+});
 
     scores.sort((a, b) => a.seconds - b.seconds);
 
@@ -309,6 +335,8 @@ function loadLeaderboard() {
             <td>${score.time}</td>
 
             <td>${score.difficulty}</td>
+            
+            <td>${score.hints ?? 0}</td>
 
         `;
 
@@ -321,6 +349,7 @@ function loadLeaderboard() {
 document
     .getElementById("new-game")
     .addEventListener("click", newGame);
+difficultySelect.addEventListener("change", newGame);
 
 document
     .getElementById("check-solution")
